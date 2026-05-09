@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
+import 'screens/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const CatalogoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class CatalogoApp extends StatelessWidget {
+  const CatalogoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Welcome to Flutter',
-      // Scaffold nos da la estructura básica visual (barra superior, cuerpo, etc.)
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Welcome to Flutter'), // Aquí está el título
-        ),
-        body: const Center(
-          child: Text('Hello World!'), // Aquí está el texto centrado
-        ),
+      title: 'Catálogo de Películas',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1565C0)),
+        useMaterial3: true,
+        cardColor: Colors.white,
       ),
+      home: const HomeScreen(),
     );
   }
 }
