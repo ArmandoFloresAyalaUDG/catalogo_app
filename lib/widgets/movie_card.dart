@@ -58,7 +58,7 @@ class MovieCard extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.amber.shade700,
+                    color: const Color(0xFFE50914),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(                          // Widget 4: Row (badge rating)
@@ -113,9 +113,9 @@ class MovieCard extends StatelessWidget {
                 const Spacer(),
                 Text(                                  // Text: año
                   movie.year.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
-                    color: Colors.grey.shade600,
+                    color: Colors.white54,
                   ),
                 ),
               ],
