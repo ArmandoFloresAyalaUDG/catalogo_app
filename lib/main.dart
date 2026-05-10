@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/favorites_provider.dart';
 import 'screens/home_screen.dart';
 
-void main() {
-  runApp(const CineHubApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final favoritesProvider = FavoritesProvider();
+  await favoritesProvider.load();
+  runApp(
+    ChangeNotifierProvider.value(
+      value: favoritesProvider,
+      child: const CineHubApp(),
+    ),
+  );
 }
 
 class CineHubApp extends StatelessWidget {

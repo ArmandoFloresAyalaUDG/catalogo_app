@@ -1,26 +1,61 @@
+import '../constants/api_constants.dart';
+
 class Movie {
+  final int id;
   final String title;
-  final String genre;
-  final int year;
-  final double rating;
-  final String posterColor;
+  final String overview;
+  final String? posterPath;
+  final String? backdropPath;
+  final double voteAverage;
+  final String releaseDate;
+  final List<int> genreIds;
 
   const Movie({
+    required this.id,
     required this.title,
-    required this.genre,
-    required this.year,
-    required this.rating,
-    required this.posterColor,
+    required this.overview,
+    this.posterPath,
+    this.backdropPath,
+    required this.voteAverage,
+    required this.releaseDate,
+    required this.genreIds,
   });
-}
 
-const List<Movie> kMovies = [
-  Movie(title: 'Dune: Part Two',       genre: 'Sci-Fi',   year: 2024, rating: 8.5, posterColor: 'sand'),
-  Movie(title: 'Oppenheimer',          genre: 'Drama',    year: 2023, rating: 8.9, posterColor: 'dark'),
-  Movie(title: 'The Batman',           genre: 'Acción',   year: 2022, rating: 7.8, posterColor: 'noir'),
-  Movie(title: 'Poor Things',          genre: 'Fantasía', year: 2023, rating: 8.0, posterColor: 'pastel'),
-  Movie(title: 'Past Lives',           genre: 'Romance',  year: 2023, rating: 7.9, posterColor: 'blue'),
-  Movie(title: 'Killers of the Moon',  genre: 'Western',  year: 2023, rating: 7.6, posterColor: 'earth'),
-  Movie(title: 'Godzilla x Kong',      genre: 'Acción',   year: 2024, rating: 6.3, posterColor: 'green'),
-  Movie(title: 'Civil War',            genre: 'Thriller', year: 2024, rating: 7.1, posterColor: 'grey'),
-];
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
+      id:           json['id']             as int,
+      title:        json['title']          as String,
+      overview:     json['overview']       as String,
+      posterPath:   json['poster_path']    as String?,
+      backdropPath: json['backdrop_path']  as String?,
+      voteAverage:  (json['vote_average']  as num).toDouble(),
+      releaseDate:  json['release_date']   as String? ?? '',
+      genreIds:     List<int>.from(json['genre_ids'] as List),
+    );
+  }
+
+  String? get posterUrl =>
+      posterPath != null ? '${ApiConstants.imageBaseUrl}$posterPath' : null;
+
+  String? get backdropUrl =>
+      backdropPath != null ? '${ApiConstants.backdropBaseUrl}$backdropPath' : null;
+
+  int get year {
+    if (releaseDate.length < 4) return 0;
+    return int.tryParse(releaseDate.substring(0, 4)) ?? 0;
+  }
+
+  String get genre {
+    if (genreIds.isEmpty) return 'Desconocido';
+    return ApiConstants.genreNames[genreIds.first] ?? 'Desconocido';
+  }
+
+  String get ratingLabel => voteAverage.toStringAsFixed(1);
+
+  String get posterColor {
+    const colors = [
+      'sand', 'dark', 'noir', 'pastel', 'blue', 'earth', 'green', 'grey'
+    ];
+    return colors[id % colors.length];
+  }
+}
