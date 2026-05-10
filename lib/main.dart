@@ -1,15 +1,31 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 import 'providers/favorites_provider.dart';
+import 'providers/watched_provider.dart';
 import 'screens/home_screen.dart';
+import 'services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final favoritesProvider = FavoritesProvider();
-  await favoritesProvider.load();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  if (FirebaseAuth.instance.currentUser == null) {
+    try {
+      await FirebaseAuth.instance.signInAnonymously();
+    } catch (_) {
+      // Sign-in anónimo fallará si no está habilitado en Firebase Console.
+      // La app carga de todos modos; los datos en nube no estarán disponibles.
+    }
+  }
   runApp(
-    ChangeNotifierProvider.value(
-      value: favoritesProvider,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthService()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+        ChangeNotifierProvider(create: (_) => WatchedProvider()),
+      ],
       child: const CineHubApp(),
     ),
   );

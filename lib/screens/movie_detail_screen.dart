@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 import '../models/movie.dart';
 import '../models/movie_details.dart';
 import '../providers/favorites_provider.dart';
+import '../providers/watched_provider.dart';
 import '../services/tmdb_service.dart';
 import '../widgets/movie_section.dart';
 import '../widgets/shimmer_card.dart';
-import 'video_play_screen.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final Movie movie;
@@ -120,7 +120,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ShimmerCard(width: 100, height: 150),
+              const ShimmerCard(width: 100, height: 150),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -128,16 +128,16 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   children: [
                     ShimmerCard(height: 24, width: double.infinity),
                     const SizedBox(height: 8),
-                    ShimmerCard(height: 16, width: 120),
+                    const ShimmerCard(height: 16, width: 120),
                     const SizedBox(height: 8),
-                    ShimmerCard(height: 16, width: 80),
+                    const ShimmerCard(height: 16, width: 80),
                   ],
                 ),
               ),
             ],
           ),
           const SizedBox(height: 20),
-          ShimmerCard(height: 16, width: 200),
+          const ShimmerCard(height: 16, width: 200),
           const SizedBox(height: 8),
           ShimmerCard(height: 80, width: double.infinity),
         ],
@@ -281,36 +281,38 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             ),
           ],
           const SizedBox(height: 24),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => VideoPlayScreen(
-                    movieId: movie.id,
-                    movieTitle: details.title,
+          Consumer<WatchedProvider>(
+            builder: (context, watchedProvider, _) {
+              final isWatched = watchedProvider.isWatched(movie.id);
+              return SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => watchedProvider.toggleWatched(movie),
+                  icon: Icon(
+                    isWatched ? Icons.visibility : Icons.visibility_outlined,
+                    size: 22,
+                  ),
+                  label: Text(
+                    isWatched ? 'Vista ✓' : 'Marcar como vista',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isWatched
+                        ? const Color(0xFF2A2A2A)
+                        : const Color(0xFFE50914),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 0,
                   ),
                 ),
-              ),
-              icon: const Icon(Icons.play_circle_filled, size: 22),
-              label: Text(
-                'Reproducir',
-                style: GoogleFonts.montserrat(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFE50914),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 0,
-              ),
-            ),
+              );
+            },
           ),
           const SizedBox(height: 8),
           MovieSection(

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "592703828086",
+    "project_id": "cinehub-882c4",
+    "storage_bucket": "cinehub-882c4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592703828086:android:7467cb8d0438750ffcef57",
+        "android_client_info": {
+          "package_name": "com.example.catalogo_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs83eSn0eSgatdXOkEH0J2ZDbDZajjSOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

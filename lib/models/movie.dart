@@ -58,4 +58,15 @@ class Movie {
     ];
     return colors[id % colors.length];
   }
+
+  Map<String, dynamic> toJson() => {
+    'id':           id,
+    'title':        title,
+    'overview':     overview,
+    'poster_path':  posterPath,
+    'backdrop_path': backdropPath,
+    'vote_average': voteAverage,
+    'release_date': releaseDate,
+    'genre_ids':    genreIds,
+  };
 }

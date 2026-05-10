@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'discover_screen.dart';
+import 'profile_screen.dart';
 import 'search_screen.dart';
-import 'favorites_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   static const _screens = [
     DiscoverScreen(),
     SearchScreen(),
-    FavoritesScreen(),
+    ProfileScreen(),
   ];
 
   @override
@@ -43,9 +43,9 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Buscar',
           ),
           NavigationDestination(
-            icon: Icon(Icons.bookmark_outline),
-            selectedIcon: Icon(Icons.bookmark_rounded, color: Color(0xFFE50914)),
-            label: 'Favoritos',
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person_rounded, color: Color(0xFFE50914)),
+            label: 'Perfil',
           ),
         ],
       ),
